@@ -44,9 +44,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
+          file: ./modules/person_api/Dockerfile
           platforms: linux/amd64
           push: true
-          # tags: jairtonjr/techtrends:latest
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
