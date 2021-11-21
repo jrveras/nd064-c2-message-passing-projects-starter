@@ -9,10 +9,14 @@ from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
+from confluent_kafka import Producer
+import json
 
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
+config = {'bootstrap.servers': 'localhost:9092'}
+topic = "persons"
 
 
 # TODO: This needs better exception handling
@@ -22,7 +26,13 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
+        producer = Producer(config)
         payload = request.get_json()
+        
+        producer.produce(topic, payload)
+        producer.poll(10000)
+        producer.flush()
+
         new_person: Person = PersonService.create(payload)
         return new_person
 
