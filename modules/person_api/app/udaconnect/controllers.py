@@ -15,7 +15,7 @@ import json
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-config = {'bootstrap.servers': 'localhost:9092'}
+config = {'bootstrap.servers': 'localhost:30092'}
 topic = "persons"
 
 
