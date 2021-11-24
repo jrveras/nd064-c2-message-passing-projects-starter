@@ -29,7 +29,7 @@ class PersonsResource(Resource):
         producer = Producer(config)
         payload = request.get_json()
         
-        producer.produce(topic, payload)
+        # producer.produce(topic, payload)
         producer.poll(10000)
         producer.flush()
 
