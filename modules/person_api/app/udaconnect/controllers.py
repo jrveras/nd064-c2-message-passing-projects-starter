@@ -26,7 +26,7 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
-        producer = Producer(config)
+        # producer = Producer(config)
         payload = request.get_json()
         
         # producer.produce(topic, payload)
