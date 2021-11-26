@@ -21,6 +21,11 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
 topic = "persons"
 
+class _ExcludeErrorsFilter(logging.Filter):
+    def filter(self, record):
+        """Only lets through log messages with log level below ERROR (numeric value: 40)."""
+        return record.levelno < 40
+
 
 # TODO: This needs better exception handling
 configLog = {
