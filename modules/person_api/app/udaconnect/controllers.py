@@ -15,7 +15,7 @@ import json
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-config = {'bootstrap.servers': 'kafka-0.kafka-headless.default.svc.cluster.local:9093'}
+config = {'bootstrap.servers': 'localhost:9092'}
 topic = "persons"
 
 
@@ -26,12 +26,12 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
-        # producer = Producer(config)
+        producer = Producer(config)
         payload = request.get_json()
         
-        # producer.produce(topic, payload)
-        # producer.poll(10000)
-        # producer.flush()
+        producer.produce(topic, payload)
+        producer.poll(10000)
+        producer.flush()
 
         new_person: Person = PersonService.create(payload)
         return new_person
