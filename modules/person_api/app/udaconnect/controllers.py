@@ -11,6 +11,7 @@ from flask_restx import Namespace, Resource
 from typing import Optional, List
 from confluent_kafka import Producer
 import json
+import logging
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -20,6 +21,8 @@ topic = "persons"
 
 
 # TODO: This needs better exception handling
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger("udaconnect-person-api")
 
 @api.route("/persons")
 class PersonsResource(Resource):
@@ -28,10 +31,13 @@ class PersonsResource(Resource):
     def post(self) -> Person:
         producer = Producer(config)
         payload = request.get_json()
-        print('WARNING: Message args 3: {}'.format(payload))
+
         producer.produce(topic, "TRICOLOR")
         producer.poll(10000)
         producer.flush()
+
+        logger.debug('WARNING: Message args 3: {}'.format(payload))
+        logger.debug('WARNING: TRICOLOR')
 
         new_person: Person = PersonService.create(payload)
         return new_person
