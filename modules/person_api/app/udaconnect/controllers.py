@@ -15,7 +15,7 @@ import json
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-config = {'bootstrap.servers': 'localhost:9092'}
+config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
 topic = "persons"
 
 
