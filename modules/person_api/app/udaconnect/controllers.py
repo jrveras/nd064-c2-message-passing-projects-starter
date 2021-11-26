@@ -102,7 +102,7 @@ class PersonsResource(Resource):
         logger.debug('WARNING: TRICOLOR')
 
         new_person: Person = PersonService.create(payload)
-        return new_person
+        return payload
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
