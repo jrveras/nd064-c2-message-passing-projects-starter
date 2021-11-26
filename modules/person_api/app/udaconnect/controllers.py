@@ -12,6 +12,8 @@ from typing import Optional, List
 from confluent_kafka import Producer
 import json
 import logging
+import logging.config
+import sys
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -21,7 +23,62 @@ topic = "persons"
 
 
 # TODO: This needs better exception handling
-logging.basicConfig(level=logging.WARNING)
+configLog = {
+        'version': 1,
+        'filters': {
+            'exclude_errors': {
+                '()': _ExcludeErrorsFilter
+            }
+        },
+        'formatters': {
+            # Modify log message format here or replace with your custom formatter class
+            'customFormatter': {
+                'format': '%(asctime)s:%(levelname)s:%(name)s:[%(filename)s.%(funcName)s:%(lineno)d]:%(levelno)s:%(message)s'
+            }
+        },
+        'handlers': {
+            'console_stderr': {
+                # Sends log messages with log level ERROR or higher to stderr
+                'class': 'logging.StreamHandler',
+                'level': 'ERROR',
+                'formatter': 'customFormatter',
+                'stream': sys.stderr
+            },
+            'console_stdout': {
+                # Sends log messages with log level lower than ERROR to stdout
+                'class': 'logging.StreamHandler',
+                'level': 'DEBUG',
+                'formatter': 'customFormatter',
+                'filters': ['exclude_errors'],
+                'stream': sys.stdout
+            },
+            'file_stderr': {
+                # Sends all log messages to a file
+                'class': 'logging.FileHandler',
+                'level': 'ERROR',
+                'formatter': 'customFormatter',
+                'filename': 'stderr.log',
+                'encoding': 'utf8'
+            },
+            'file_stdout': {
+                # Sends all log messages to a file
+                'class': 'logging.FileHandler',
+                'level': 'DEBUG',
+                'formatter': 'customFormatter',
+                'filters': ['exclude_errors'],
+                'filename': 'stdout.log',
+                'encoding': 'utf8'
+            }
+        },
+        'root': {
+            # In general, this should be kept at 'NOTSET'.
+            # Otherwise it would interfere with the log levels set for each handler.
+            'level': 'NOTSET',
+            'handlers': ['console_stderr', 'console_stdout', 'file_stderr', 'file_stdout']
+        },
+    }
+
+logging.config.dictConfig(configLog)
 logger = logging.getLogger("udaconnect-person-api")
 
 @api.route("/persons")
