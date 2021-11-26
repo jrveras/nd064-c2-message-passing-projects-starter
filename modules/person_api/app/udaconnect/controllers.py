@@ -28,8 +28,8 @@ class PersonsResource(Resource):
     def post(self) -> Person:
         producer = Producer(config)
         payload = request.get_json()
-        
-        producer.produce(topic, payload)
+        print('WARNING: Message args 3: {}'.format(payload))
+        producer.produce(topic, "TRICOLOR")
         producer.poll(10000)
         producer.flush()
 
