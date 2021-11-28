@@ -7,7 +7,7 @@ from confluent_kafka import Consumer
 if __name__ == '__main__':
 
     configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'enable.auto.commit': False, 'auto.offset.reset': 'earliest'}
-    topic = "person_queue_3"
+    topic = "persons"
 
     # Create Consumer instance
     consumer = Consumer(configConsumer)
