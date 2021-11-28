@@ -102,8 +102,10 @@ class PersonsResource(Resource):
         logger.debug('WARNING: Message args 3: {}'.format(payload))
         logger.debug('WARNING: TRICOLOR')
 
-        new_person: Person = PersonService.create(payload)
-        return new_person
+        # new_person: Person = PersonService.create(payload)
+        response = json.dumps({ "result": "OK" })
+        # return new_person
+        return response
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
@@ -118,3 +120,14 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
+
+
+
+
+
+
+        response = app.response_class(
+            response=json.dumps({ "result": "OK - healthy" }),
+            status=200,
+            mimetype='application/json'
+        )

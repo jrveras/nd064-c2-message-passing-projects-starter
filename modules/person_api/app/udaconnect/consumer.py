@@ -4,6 +4,8 @@ import json
 from argparse import ArgumentParser, FileType
 from configparser import ConfigParser
 from confluent_kafka import Consumer, OFFSET_BEGINNING
+from app.udaconnect.services import PersonService
+from app.udaconnect.models import Person
 
 
 if __name__ == '__main__':
@@ -43,7 +45,8 @@ if __name__ == '__main__':
                 # Extract the (optional) key and value, and print.
 
                 result = msg.value().decode("utf-8")
-                response = json.loads(result)
+                # response = json.loads(result)
+                new_person: Person = PersonService.create(result)
 
                 # print("Consumed event from topic {topic}: {person}".format(
                 #     topic=msg.topic(), person=response["company_name"]))
