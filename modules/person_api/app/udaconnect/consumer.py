@@ -2,6 +2,7 @@
 import sys
 import json
 import requests
+import time
 from confluent_kafka import Consumer
 
 if __name__ == '__main__':
@@ -32,11 +33,10 @@ if __name__ == '__main__':
                 np = json.loads(result)
                 r = requests.post('http://localhost:30002/api/persons/new', data = np)
                 consumer.commit(asynchronous=False)
-                consumer.close()
+                time.sleep(15)
                 
     except KeyboardInterrupt:
         pass
     finally:
         # Leave group and commit final offsets
-        consumer.commit(asynchronous=False)
         consumer.close()
