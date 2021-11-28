@@ -5,7 +5,7 @@ from app.udaconnect.schemas import (
     PersonSchema,
 )
 from app.udaconnect.services import PersonService
-from flask import request
+from flask import request, json
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
@@ -93,8 +93,9 @@ class PersonsResource(Resource):
     def post(self) -> Person:
         producer = Producer(config)
         payload = request.get_json()
+        p = json.dumps(payload)
 
-        producer.produce(topic, "TRICOLOR")
+        producer.produce(topic, p)
         producer.poll(10000)
         producer.flush()
 
@@ -102,7 +103,7 @@ class PersonsResource(Resource):
         logger.debug('WARNING: TRICOLOR')
 
         new_person: Person = PersonService.create(payload)
-        return payload
+        return new_person
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
