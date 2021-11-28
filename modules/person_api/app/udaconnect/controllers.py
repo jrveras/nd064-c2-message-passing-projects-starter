@@ -118,16 +118,16 @@ class PersonsResource(Resource):
         logger.debug('WARNING: TRICOLOR')
 
         # Create Consumer instance
-        consumer = Consumer(configConsumer)
+        # consumer = Consumer(configConsumer)
 
         # Set up a callback to handle the '--reset' flag.
 
         # Subscribe to topic
         # consumer.subscribe([topic], on_assign=reset_offset)
-        consumer.subscribe([topic])
+        # consumer.subscribe([topic])
 
-        msg = consumer.poll(1.0)
-        payload = msg.value().decode("utf-8")
+        # msg = consumer.poll(1.0)
+        # payload = msg.value().decode("utf-8")
         new_person: Person = PersonService.create(payload)
 
         # new_person: Person = PersonService.create(payload)
