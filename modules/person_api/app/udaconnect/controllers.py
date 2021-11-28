@@ -22,7 +22,7 @@ DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
 config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
-configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'person_1', 'enable.auto.commit': False, 'enable.auto.offset.store': True, 'auto.offset.reset': 'latest'}
+configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'auto.offset.reset': 'earliest'}
 topic = "person_queue"
 # Parse the command line.
 # parser = ArgumentParser()
@@ -113,14 +113,14 @@ class PersonsResource(Resource):
         consumer = Consumer(configConsumer)
 
         # Set up a callback to handle the '--reset' flag.
-        # def reset_offset(consumer, partitions):
-        #     # if args.reset:
-        #     for p in partitions:
-        #         p.offset = OFFSET_BEGINNING
-        #     consumer.assign(partitions)
+        def reset_offset(consumer, partitions):
+            # if args.reset:
+            for p in partitions:
+                p.offset = OFFSET_BEGINNING
+            consumer.assign(partitions)
 
         # Subscribe to topic
-        consumer.subscribe([topic])
+        consumer.subscribe([topic], on_assign=reset_offset)
         # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
