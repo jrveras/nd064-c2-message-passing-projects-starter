@@ -120,7 +120,7 @@ class PersonsResource(Resource):
             consumer.assign(partitions)
 
         # Subscribe to topic
-        consumer.subscribe([topic])
+        consumer.subscribe([topic], on_assign=reset_offset)
         # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
