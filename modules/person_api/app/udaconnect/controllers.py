@@ -100,7 +100,7 @@ class PersonsResource(Resource):
     def post(self) -> Person:
         producer = Producer(config)
         payload = request.get_json()
-        p = json.dumps(payload).encode()
+        p = json.dumps(payload)
 
         producer.produce(topic, p)
         producer.poll(10000)
@@ -124,9 +124,8 @@ class PersonsResource(Resource):
         # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
-        # result = msg.value().decode("utf-8")
-        result = msg.value()
-        np = json.dumps(result).encode()
+        result = msg.value().decode("utf-8")
+        np = json.dumps(result)
         new_person: Person = PersonService.create(np)
 
         # new_person: Person = PersonService.create(payload)
