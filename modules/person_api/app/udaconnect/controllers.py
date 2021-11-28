@@ -21,9 +21,8 @@ DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
 config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
-# configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'auto.offset.reset': 'latest'}
 configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'enable.auto.commit': False, 'auto.offset.reset': 'earliest'}
-topic = "person_queue_3"
+topic = "persons"
 
 class _ExcludeErrorsFilter(logging.Filter):
     def filter(self, record):
@@ -103,33 +102,28 @@ class PersonsResource(Resource):
         producer.flush()
 
         # Create Consumer instance
-        consumer = Consumer(configConsumer)
-
-        # Set up a callback to handle the '--reset' flag.
-        # def reset_offset(consumer, partitions):
-        #     # if args.reset:
-        #     for p in partitions:
-        #         p.offset = OFFSET_BEGINNING
-        #     consumer.assign(partitions)
+        # consumer = Consumer(configConsumer)
 
         # Subscribe to topic
-        consumer.subscribe([topic])
-        # msg = consumer.poll(1.0)
-        msg = consumer.poll(timeout=1.0)
+        # consumer.subscribe([topic])
+        # msg = consumer.poll(timeout=1.0)
 
-        result = msg.value().decode("utf-8")
-        logger.debug('WARNING: Resulta: {}'.format(result))
-        np = json.loads(result)
-        logger.debug('WARNING: New Person: {}'.format(np))
-        new_person: Person = PersonService.create(np)
+        # result = msg.value().decode("utf-8")
+        # logger.debug('WARNING: Resulta: {}'.format(result))
+        # np = json.loads(result)
+        # logger.debug('WARNING: New Person: {}'.format(np))
+        # new_person: Person = PersonService.create(np)
         
-        consumer.commit(asynchronous=False)
-        consumer.close()
+        # consumer.commit(asynchronous=False)
+        # consumer.close()
 
-        # new_person: Person = PersonService.create(payload)
-        # response = json.dumps({ "result": "OK" })
         # return new_person
-        return new_person
+        response = {
+            "result": "OK"
+        }
+
+        r = json.dumps(response)
+        return r
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
@@ -144,3 +138,13 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
+
+
+@api.route("/persons/new")
+class PersonsResource(Resource):
+    @accepts(schema=PersonSchema)
+    @responds(schema=PersonSchema)
+    def post(self) -> Person:
+        payload = request.get_json()
+        new_person: Person = PersonService.create(payload)
+        return new_person
