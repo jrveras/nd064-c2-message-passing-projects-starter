@@ -15,7 +15,7 @@ from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
 from confluent_kafka import Producer
-from argparse import ArgumentParser, FileType
+# from argparse import ArgumentParser, FileType
 from confluent_kafka import Consumer, OFFSET_BEGINNING
 
 DATE_FORMAT = "%Y-%m-%d"
@@ -25,9 +25,9 @@ config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.def
 configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'auto.offset.reset': 'earliest'}
 topic = "persons"
 # Parse the command line.
-parser = ArgumentParser()
-parser.add_argument('--reset', action='store_true')
-args = parser.parse_args()
+# parser = ArgumentParser()
+# parser.add_argument('--reset', action='store_true')
+# args = parser.parse_args()
 
 class _ExcludeErrorsFilter(logging.Filter):
     def filter(self, record):
@@ -117,17 +117,17 @@ class PersonsResource(Resource):
         logger.debug('WARNING: TRICOLOR')
 
         # Create Consumer instance
-        # consumer = Consumer(configConsumer)
+        consumer = Consumer(configConsumer)
 
         # Set up a callback to handle the '--reset' flag.
 
         # Subscribe to topic
         # consumer.subscribe([topic], on_assign=reset_offset)
-        # consumer.subscribe([topic])
+        consumer.subscribe([topic])
 
-        # msg = consumer.poll(1.0)
-        # payload = msg.value().decode("utf-8")
-        new_person: Person = PersonService.create(payload)
+        msg = consumer.poll(1.0)
+        result = msg.value().decode("utf-8")
+        new_person: Person = PersonService.create(result)
 
         # new_person: Person = PersonService.create(payload)
         # response = json.dumps({ "result": "OK" })
