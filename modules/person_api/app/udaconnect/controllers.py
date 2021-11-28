@@ -127,7 +127,8 @@ class PersonsResource(Resource):
 
         msg = consumer.poll(1.0)
         result = msg.value().decode("utf-8")
-        new_person: Person = PersonService.create(result)
+        np = json.dumps(result)
+        new_person: Person = PersonService.create(np)
 
         # new_person: Person = PersonService.create(payload)
         # response = json.dumps({ "result": "OK" })
