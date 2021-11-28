@@ -106,8 +106,8 @@ class PersonsResource(Resource):
         producer.poll(10000)
         producer.flush()
 
-        logger.debug('WARNING: Message args 3: {}'.format(payload))
-        logger.debug('WARNING: TRICOLOR')
+        # logger.debug('WARNING: Message args 3: {}'.format(payload))
+        # logger.debug('WARNING: TRICOLOR')
 
         # Create Consumer instance
         consumer = Consumer(configConsumer)
@@ -125,7 +125,9 @@ class PersonsResource(Resource):
 
         msg = consumer.poll(1.0)
         result = msg.value().decode("utf-8")
+        logger.debug('WARNING: Resulta: {}'.format(result))
         np = json.dumps(result)
+        logger.debug('WARNING: New Person: {}'.format(np))
         new_person: Person = PersonService.create(np)
 
         # new_person: Person = PersonService.create(payload)
