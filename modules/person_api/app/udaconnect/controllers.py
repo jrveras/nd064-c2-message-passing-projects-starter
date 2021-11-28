@@ -16,7 +16,6 @@ from flask_restx import Namespace, Resource
 from typing import Optional, List
 from confluent_kafka import Producer
 from argparse import ArgumentParser, FileType
-from configparser import ConfigParser
 from confluent_kafka import Consumer, OFFSET_BEGINNING
 
 DATE_FORMAT = "%Y-%m-%d"
