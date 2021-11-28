@@ -34,13 +34,6 @@ class _ExcludeErrorsFilter(logging.Filter):
         """Only lets through log messages with log level below ERROR (numeric value: 40)."""
         return record.levelno < 40
 
-# def reset_offset(consumer, partitions):
-#     if args.reset:
-#         for p in partitions:
-#             p.offset = OFFSET_BEGINNING
-#         consumer.assign(partitions)
-
-
 # TODO: This needs better exception handling
 configLog = {
         'version': 1,
@@ -120,10 +113,15 @@ class PersonsResource(Resource):
         consumer = Consumer(configConsumer)
 
         # Set up a callback to handle the '--reset' flag.
+        def reset_offset(consumer, partitions):
+            # if args.reset:
+            for p in partitions:
+                p.offset = OFFSET_BEGINNING
+            consumer.assign(partitions)
 
         # Subscribe to topic
-        # consumer.subscribe([topic], on_assign=reset_offset)
-        consumer.subscribe([topic])
+        consumer.subscribe([topic], on_assign=reset_offset)
+        # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
         result = msg.value().decode("utf-8")
