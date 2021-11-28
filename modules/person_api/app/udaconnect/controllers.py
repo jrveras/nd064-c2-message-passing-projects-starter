@@ -23,7 +23,7 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
 # configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'auto.offset.reset': 'latest'}
 configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'enable.auto.commit': False, 'auto.offset.reset': 'earliest'}
-topic = "person_queue_2"
+topic = "person_queue_3"
 
 class _ExcludeErrorsFilter(logging.Filter):
     def filter(self, record):
