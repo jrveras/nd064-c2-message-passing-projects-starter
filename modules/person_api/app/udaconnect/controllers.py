@@ -91,7 +91,7 @@ configLog = {
     }
 
 logging.config.dictConfig(configLog)
-logger = logging.getLogger("udaconnect-person-api")
+logger = logging.getLogger(__name__)
 
 @api.route("/persons")
 class PersonsResource(Resource):
@@ -120,7 +120,7 @@ class PersonsResource(Resource):
             consumer.assign(partitions)
 
         # Subscribe to topic
-        consumer.subscribe([topic], on_assign=reset_offset)
+        consumer.subscribe([topic])
         # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
