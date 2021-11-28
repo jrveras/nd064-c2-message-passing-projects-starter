@@ -146,14 +146,3 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
-
-
-
-
-
-
-        response = app.response_class(
-            response=json.dumps({ "result": "OK - healthy" }),
-            status=200,
-            mimetype='application/json'
-        )
