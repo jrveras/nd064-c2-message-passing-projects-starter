@@ -113,14 +113,14 @@ class PersonsResource(Resource):
         consumer = Consumer(configConsumer)
 
         # Set up a callback to handle the '--reset' flag.
-        def reset_offset(consumer, partitions):
-            # if args.reset:
-            for p in partitions:
-                p.offset = OFFSET_BEGINNING
-            consumer.assign(partitions)
+        # def reset_offset(consumer, partitions):
+        #     # if args.reset:
+        #     for p in partitions:
+        #         p.offset = OFFSET_BEGINNING
+        #     consumer.assign(partitions)
 
         # Subscribe to topic
-        consumer.subscribe([topic], on_assign=reset_offset)
+        consumer.subscribe([topic])
         # consumer.subscribe([topic])
 
         msg = consumer.poll(1.0)
@@ -129,6 +129,7 @@ class PersonsResource(Resource):
         np = json.loads(result)
         logger.debug('WARNING: New Person: {}'.format(np))
         new_person: Person = PersonService.create(np)
+        consumer.close()
 
         # new_person: Person = PersonService.create(payload)
         # response = json.dumps({ "result": "OK" })
