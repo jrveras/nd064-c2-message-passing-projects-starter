@@ -22,7 +22,7 @@ DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
 config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
-configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'person_1', 'auto.offset.reset': 'latest'}
+configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'person_1', 'enable.auto.commit': False, 'enable.auto.offset.store': True, 'auto.offset.reset': 'latest'}
 topic = "person_queue"
 # Parse the command line.
 # parser = ArgumentParser()
