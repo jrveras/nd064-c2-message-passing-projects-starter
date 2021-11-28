@@ -30,19 +30,6 @@ parser = ArgumentParser()
 parser.add_argument('--reset', action='store_true')
 args = parser.parse_args()
 
-# Create Consumer instance
-consumer = Consumer(config)
-
-# Set up a callback to handle the '--reset' flag.
-def reset_offset(consumer, partitions):
-    if args.reset:
-        for p in partitions:
-            p.offset = OFFSET_BEGINNING
-        consumer.assign(partitions)
-
-# Subscribe to topic
-consumer.subscribe([topic], on_assign=reset_offset)
-
 class _ExcludeErrorsFilter(logging.Filter):
     def filter(self, record):
         """Only lets through log messages with log level below ERROR (numeric value: 40)."""
@@ -123,6 +110,19 @@ class PersonsResource(Resource):
 
         logger.debug('WARNING: Message args 3: {}'.format(payload))
         logger.debug('WARNING: TRICOLOR')
+
+        # Create Consumer instance
+        consumer = Consumer(configConsumer)
+
+        # Set up a callback to handle the '--reset' flag.
+        def reset_offset(consumer, partitions):
+            if args.reset:
+                for p in partitions:
+                    p.offset = OFFSET_BEGINNING
+                consumer.assign(partitions)
+
+        # Subscribe to topic
+        consumer.subscribe([topic], on_assign=reset_offset)
 
         msg = consumer.poll(1.0)
         payload = msg.value().decode("utf-8")
