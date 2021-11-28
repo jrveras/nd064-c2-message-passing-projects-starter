@@ -31,6 +31,8 @@ if __name__ == '__main__':
                 result = msg.value().decode("utf-8")
                 np = json.loads(result)
                 r = requests.post('http://localhost:30002/api/persons/new', data = np)
+                consumer.commit(asynchronous=False)
+                consumer.close()
                 
     except KeyboardInterrupt:
         pass
