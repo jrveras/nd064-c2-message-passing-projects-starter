@@ -103,7 +103,7 @@ class PersonsResource(Resource):
         p = json.dumps(payload)
 
         producer.produce(topic, p)
-        producer.poll(10000)
+        producer.poll(1.0)
         producer.flush()
 
         # logger.debug('WARNING: Message args 3: {}'.format(payload))
