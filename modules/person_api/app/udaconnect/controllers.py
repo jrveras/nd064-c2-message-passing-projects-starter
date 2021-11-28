@@ -15,9 +15,9 @@ from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
 from confluent_kafka import Producer
-from argparse import ArgumentParser, FileType
-from configparser import ConfigParser
-from confluent_kafka import Consumer, OFFSET_BEGINNING
+# from argparse import ArgumentParser, FileType
+# from configparser import ConfigParser
+# from confluent_kafka import Consumer, OFFSET_BEGINNING
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -26,9 +26,9 @@ config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.def
 configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'auto.offset.reset': 'earliest'}
 topic = "persons"
 # Parse the command line.
-parser = ArgumentParser()
-parser.add_argument('--reset', action='store_true')
-args = parser.parse_args()
+# parser = ArgumentParser()
+# parser.add_argument('--reset', action='store_true')
+# args = parser.parse_args()
 
 class _ExcludeErrorsFilter(logging.Filter):
     def filter(self, record):
