@@ -126,7 +126,6 @@ class PersonsResource(Resource):
         msg = consumer.poll(1.0)
         result = msg.value().decode("utf-8")
         logger.debug('WARNING: Resulta: {}'.format(result))
-        # np = json.dumps(result)
         np = json.loads(result)
         logger.debug('WARNING: New Person: {}'.format(np))
         new_person: Person = PersonService.create(np)
