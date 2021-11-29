@@ -122,7 +122,7 @@ class PersonsResource(Resource):
             "result": "OK"
         }
 
-        r = json.dumps(response)
+        r = json.loads(response)
         return r
 
     @responds(schema=PersonSchema, many=True)
@@ -148,7 +148,7 @@ class PersonsResource(Resource):
         consumer = Consumer(configConsumer)
         # Subscribe to topic
         consumer.subscribe([topic])
-        msg = consumer.poll(timeout=1.0)
+        msg = consumer.poll()
 
         result = msg.value().decode("utf-8")
         np = json.loads(result)
