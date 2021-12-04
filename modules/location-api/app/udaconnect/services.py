@@ -9,8 +9,7 @@ from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
 
 logging.basicConfig(level=logging.WARNING)
-logger = logging.getLogger("udaconnect-api")
-
+logger = logging.getLogger(__name__)
 
 class ConnectionService:
     @staticmethod
@@ -114,6 +113,8 @@ class LocationService:
     def retrieve_all() -> List[Location]:
         locations: List[Location] = db.session.query(Location).all()
 
+        logger.warning('WARNING: Resultado 1: {}'.format(locations))
+
         data = []
         for location in locations:
             data.append(
@@ -127,6 +128,7 @@ class LocationService:
             )
 
         # return db.session.query(Location).all()
+        logger.warning('WARNING: Resultado 2: {}'.format(data))
         return data
 
 
