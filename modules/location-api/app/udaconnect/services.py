@@ -121,15 +121,9 @@ class LocationService:
 
         data = []
         for location in locations:
-            data.append(
-                {
-                    "id": location.id,
-                    "person_id": location.person_id,
-                    "longitude": location.longitude,
-                    "latitude": location.latitude,
-                    "creation_time": location.creation_time
-                }
-            )
+            coord_text = location.coordinate.ST_AsText()
+            location.wkt_shape = coord_text
+            data.append(location)
 
         # return db.session.query(Location).all()
         logger.warning('WARNING: Resultado 2: {}'.format(data))
