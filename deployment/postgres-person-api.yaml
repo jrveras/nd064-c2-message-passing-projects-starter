@@ -65,7 +65,7 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               configMapKeyRef:
-                name: db-env
+                name: db-env-person
                 key: DB_USERNAME
           - name: POSTGRES_PASSWORD
             valueFrom:
@@ -75,10 +75,10 @@ spec:
           - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
-                name: db-env
+                name: db-env-person
                 key: DB_NAME
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
+            - mountPath: /var/lib/postgresql/data-2
               name: postgresdb
       volumes:
         - name: postgresdb
