@@ -35,13 +35,6 @@ class LocationResource(Resource):
         locations: List[Location] = LocationService.retrieve_all()
         return locations
 
-
-
- def get(self) -> List[Person]:
-        persons: List[Person] = PersonService.retrieve_all()
-        return persons
-
-
 @api.route("/locations/<location_id>")
 @api.param("location_id", "Unique ID for a given Location", _in="query")
 class LocationResource(Resource):
