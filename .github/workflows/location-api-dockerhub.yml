@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - "modules/person-api/**"
+      - "modules/location-api/**"
     tags:
         - 'v*.*.*'
 
@@ -21,7 +21,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: jairtonjr/udaconnect_person_api
+          images: jairtonjr/udaconnect_location_api
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./modules/person-api/Dockerfile
+          file: ./modules/location-api/Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
