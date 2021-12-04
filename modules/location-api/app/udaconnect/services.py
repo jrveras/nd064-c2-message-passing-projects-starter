@@ -89,8 +89,12 @@ class LocationService:
             .one()
         )
 
+        logger.warning('WARNING: Resultado 1: {}'.format(location))
+        logger.warning('WARNING: Resultado 2: {}'.format(coord_text))
+
         # Rely on database to return text form of point to reduce overhead of conversion in app code
         location.wkt_shape = coord_text
+        logger.warning('WARNING: Resultado 3: {}'.format(location))
         return location
 
     @staticmethod
