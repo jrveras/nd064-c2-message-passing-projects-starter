@@ -156,4 +156,8 @@ class PersonService:
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        return db.session.query(Person).all()
+        lst: List[Person] = db.session.query(Person).all()
+        logger.warning('WARNING: Resultado 21: {}'.format(lst))
+        lista = db.session.query(Person).all()
+        logger.warning('WARNING: Resultado 22: {}'.format(lista))
+        return lst
