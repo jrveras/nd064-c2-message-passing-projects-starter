@@ -18,7 +18,7 @@ To do so, ***you will refactor this application into a microservice architecture
 * [Vagrant](https://www.vagrantup.com/) - Tool for managing virtual deployed environments
 * [VirtualBox](https://www.virtualbox.org/) - Hypervisor allowing you to run multiple operating systems
 * [K3s](https://k3s.io/) - Lightweight distribution of K8s to easily develop against a local cluster
-
+ 
 ## Running the app
 The project has been set up such that you should be able to have the project up and running with Kubernetes.
 
