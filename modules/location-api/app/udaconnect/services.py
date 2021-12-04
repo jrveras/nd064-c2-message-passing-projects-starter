@@ -112,7 +112,22 @@ class LocationService:
     
     @staticmethod
     def retrieve_all() -> List[Location]:
-        return db.session.query(Location).all()
+        locations: List[Location] = db.session.query(Location).all()
+
+        data = []
+        for location in locations:
+            data.append(
+                {
+                    "person_id": location.id,
+                    "person_id": location.person_id,
+                    "longitude": location.longitude,
+                    "latitude": location.latitude,
+                    "creation_time": location.creation_time
+                }
+            )
+
+        # return db.session.query(Location).all()
+        return data
 
 
 class PersonService:
