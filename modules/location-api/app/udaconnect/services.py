@@ -123,7 +123,7 @@ class LocationService:
         for location in locations:
             data.append(
                 {
-                    "person_id": location.id,
+                    "id": location.id,
                     "person_id": location.person_id,
                     "longitude": location.longitude,
                     "latitude": location.latitude,
