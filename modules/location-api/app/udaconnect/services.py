@@ -113,46 +113,46 @@ class LocationService:
 
         return new_location
     
-    @staticmethod
-    def retrieve_all() -> List[Location]:
-        locations: List[Location] = db.session.query(Location).all()
+    # @staticmethod
+    # def retrieve_all() -> List[Location]:
+    #     locations: List[Location] = db.session.query(Location).all()
 
-        # logger.warning('WARNING: Resultado 1: {}'.format(locations))
+    #     # logger.warning('WARNING: Resultado 1: {}'.format(locations))
 
-        data = []
-        for location in locations:
-            data.append(
-                    {
-                        "id": location.id,
-                        "person_id": location.person_id,
-                        "longitude": "-106.5721846",
-                        "latitude": "35.058564",
-                        "creation_time": '2020-07-07 10:37:06.000000'
-                    }
-                )
+    #     data = []
+    #     for location in locations:
+    #         data.append(
+    #                 {
+    #                     "id": location.id,
+    #                     "person_id": location.person_id,
+    #                     "longitude": "-106.5721846",
+    #                     "latitude": "35.058564",
+    #                     "creation_time": '2020-07-07 10:37:06.000000'
+    #                 }
+    #             )
         
-        # for location in locations:
-        #     location = Location(
-        #             id=location.id,
-        #             person_id=location.person_id,
-        #             creation_time=location.creation_time,
-        #             longitude="" ,
-        #             latitude=""
-        #         )
+    #     # for location in locations:
+    #     #     location = Location(
+    #     #             id=location.id,
+    #     #             person_id=location.person_id,
+    #     #             creation_time=location.creation_time,
+    #     #             longitude="" ,
+    #     #             latitude=""
+    #     #         )
 
-        #     data.append(
-        #         Location(location)
-        #     )
+    #     #     data.append(
+    #     #         Location(location)
+    #     #     )
 
-        # # return db.session.query(Location).all()
-        # logger.warning('WARNING: Resultado 2: {}'.format(data))
-        for location in data:
-            # location.wkt_shape = location.coordinate.ST_AsText()
-            validation_results: Dict = LocationSchema().validate(location)
-            if validation_results:
-                logger.warning(f"Unexpected data format in payload JJ New: {validation_results}")
-                raise Exception(f"Invalid payload: {validation_results}")
-        return data
+    #     # # return db.session.query(Location).all()
+    #     # logger.warning('WARNING: Resultado 2: {}'.format(data))
+    #     for location in data:
+    #         # location.wkt_shape = location.coordinate.ST_AsText()
+    #         validation_results: Dict = LocationSchema().validate(location)
+    #         if validation_results:
+    #             logger.warning(f"Unexpected data format in payload JJ New: {validation_results}")
+    #             raise Exception(f"Invalid payload: {validation_results}")
+    #     return data
 
 
 class PersonService:
