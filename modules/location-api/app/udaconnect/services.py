@@ -126,8 +126,9 @@ class LocationService:
                     id=location.id,
                     person_id=location.person_id,
                     creation_time=location.creation_time,
+                    longitude=location.longitude,
+                    latitude=location.latitude
                 )
-            location.set_wkt_with_coords(location.latitude.ST_AsText(), location.longitude.ST_AsText())
 
             data.append(
                 Location(location)
