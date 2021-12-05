@@ -117,29 +117,30 @@ class LocationService:
     def retrieve_all() -> List[Location]:
         locations: List[Location] = db.session.query(Location).all()
 
-        logger.warning('WARNING: Resultado 1: {}'.format(locations))
+        # logger.warning('WARNING: Resultado 1: {}'.format(locations))
 
-        data: List[Location] = []
+        # data: List[Location] = []
         
+        # for location in locations:
+        #     location = Location(
+        #             id=location.id,
+        #             person_id=location.person_id,
+        #             creation_time=location.creation_time,
+        #         )
+        #     location.set_wkt_with_coords(location.latitude, location.longitude)
+
+        #     data.append(
+        #         Location(location)
+        #     )
+
+        # # return db.session.query(Location).all()
+        # logger.warning('WARNING: Resultado 2: {}'.format(data))
         for location in locations:
-            location = Location(
-                    id=location.id,
-                    person_id=location.person_id,
-                    creation_time=location.creation_time,
-                )
-            location.set_wkt_with_coords(location.latitude, location.longitude)
-
-            data.append(
-                Location(location)
-            )
-
-        # return db.session.query(Location).all()
-        logger.warning('WARNING: Resultado 2: {}'.format(data))
-        validation_results: Dict = LocationSchema().validate(data)
-        if validation_results:
-            logger.warning(f"Unexpected data format in payload JJ: {validation_results}")
-            raise Exception(f"Invalid payload: {validation_results}")
-        return data
+            validation_results: Dict = LocationSchema().validate(location)
+            if validation_results:
+                logger.warning(f"Unexpected data format in payload JJ: {validation_results}")
+                raise Exception(f"Invalid payload: {validation_results}")
+        return locations
 
 
 class PersonService:
