@@ -20,8 +20,7 @@ from confluent_kafka import Consumer, OFFSET_BEGINNING
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-config = {'bootstrap.servers': 'my-release-kafka-0.my-release-kafka-headless.default.svc.cluster.local:9092'}
-configConsumer = {'bootstrap.servers': 'my-release-kafka.default.svc.cluster.local:9092', 'group.id': 'python_example_group_1', 'enable.auto.commit': False, 'auto.offset.reset': 'earliest'}
+config = {'bootstrap.servers': 'udaconnect-queue-kafka-0.udaconnect-queue-kafka-headless.default.svc.cluster.local:9092'}
 topic = "persons"
 
 class _ExcludeErrorsFilter(logging.Filter):
