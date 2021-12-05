@@ -136,6 +136,7 @@ class LocationService:
         # # return db.session.query(Location).all()
         # logger.warning('WARNING: Resultado 2: {}'.format(data))
         for location in locations:
+            location.wkt_shape = location.coordinate.ST_AsText()
             validation_results: Dict = LocationSchema().validate(location)
             if validation_results:
                 logger.warning(f"Unexpected data format in payload JJ: {validation_results}")
