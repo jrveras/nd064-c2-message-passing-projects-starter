@@ -125,9 +125,9 @@ class LocationService:
                     {
                         "id": location.id,
                         "person_id": location.person_id,
-                        "longitude": "",
-                        "latitude": "",
-                        "creation_time": '2020-07-06 10:37:06.000000'
+                        "longitude": "-106.5721846",
+                        "latitude": "35.058564",
+                        "creation_time": datetime.datetime.now()
                     }
                 )
         
