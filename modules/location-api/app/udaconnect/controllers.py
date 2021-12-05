@@ -30,7 +30,7 @@ class LocationResource(Resource):
         return location
 
     
-    @responds(schema=LocationSchema)
+    @responds(schema=LocationSchema, many=True)
     def get(self) -> List[Location]:
         locations: List[Location] = LocationService.retrieve_all()
         return locations
