@@ -119,14 +119,26 @@ class LocationService:
 
         logger.warning('WARNING: Resultado 1: {}'.format(locations))
 
-        data = []
+        data: List[Location] = []
+        
         for location in locations:
-            coord_text = location.coordinate.ST_AsText()
-            location.wkt_shape = coord_text
-            data.append(location)
+            location = Location(
+                    id=location.id,
+                    person_id=location.person_id,
+                    creation_time=location.creation_time,
+                )
+            location.set_wkt_with_coords(location.latitude, location.longitude)
+
+            data.append(
+                Location(location)
+            )
 
         # return db.session.query(Location).all()
         logger.warning('WARNING: Resultado 2: {}'.format(data))
+        validation_results: Dict = LocationSchema().validate(data)
+        if validation_results:
+            logger.warning(f"Unexpected data format in payload JJ: {validation_results}")
+            raise Exception(f"Invalid payload: {validation_results}")
         return data
 
 
@@ -150,8 +162,4 @@ class PersonService:
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        lst: List[Person] = db.session.query(Person).all()
-        logger.warning('WARNING: Resultado 21: {}'.format(lst))
-        lista = db.session.query(Person).all()
-        logger.warning('WARNING: Resultado 22: {}'.format(lista))
-        return lst
+        return db.session.query(Person).all()

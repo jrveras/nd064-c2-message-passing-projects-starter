@@ -29,5 +29,4 @@ class PersonService:
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        logger.warning('WARNING: Resultado 1: {}'.format(db.session.query(Person).all()))
         return db.session.query(Person).all()
