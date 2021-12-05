@@ -91,39 +91,21 @@ logger = logging.getLogger(__name__)
 @api.route("/persons")
 class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
-    # @responds(schema=PersonSchema)
+    @responds(schema=PersonSchema)
     def post(self) -> Person:
-        producer = Producer(config)
-        payload = request.get_json()
-        p = json.dumps(payload)
+        try:
+            payload = request.get_json()
+            new_person: Person = PersonService.create(payload)
+        except KeyboardInterrupt:
+            pass
+        finally:
+            producer = Producer(config)
+            person = json.dumps(payload)
 
-        producer.produce(topic, p)
-        # producer.poll(10000)
-        producer.flush()
-
-        # Create Consumer instance
-        # consumer = Consumer(configConsumer)
-
-        # Subscribe to topic
-        # consumer.subscribe([topic])
-        # msg = consumer.poll(timeout=1.0)
-
-        # result = msg.value().decode("utf-8")
-        # logger.debug('WARNING: Resulta: {}'.format(result))
-        # np = json.loads(result)
-        # logger.debug('WARNING: New Person: {}'.format(np))
-        # new_person: Person = PersonService.create(np)
+            producer.produce(topic, person)
+            producer.flush()
         
-        # consumer.commit(asynchronous=False)
-        # consumer.close()
-
-        # return new_person
-        response = {
-            "result": "OK"
-        }
-
-        r = json.loads(response)
-        return r
+        return new_person
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
@@ -138,23 +120,3 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
-
-
-@api.route("/persons/consumer")
-class PersonsResource(Resource):
-    @responds(schema=PersonSchema)
-    def get(self) -> Person:
-        # Create Consumer instance
-        consumer = Consumer(configConsumer)
-        # Subscribe to topic
-        consumer.subscribe([topic])
-        msg = consumer.poll()
-
-        result = msg.value().decode("utf-8")
-        np = json.loads(result)
-        new_person: Person = PersonService.create(np)
-        
-        consumer.commit(asynchronous=False)
-        consumer.close()
-
-        return new_person
