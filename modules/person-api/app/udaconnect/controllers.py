@@ -95,8 +95,13 @@ class PersonsResource(Resource):
         try:
             payload = request.get_json()
             new_person: Person = PersonService.create(payload)
-        except KeyboardInterrupt:
-            pass
+        except Exception as e:
+            response = api.response_class(
+                response=json.dumps({ "ERROR": format(e) }),
+                status=500,
+                mimetype='application/json'
+            return response
+            )
         finally:
             producer = Producer(config)
             person = json.dumps(payload)
