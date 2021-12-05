@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 
 from app.udaconnect.models import Connection, Location, Person
@@ -50,8 +52,10 @@ class PersonsResource(Resource):
     @responds(schema=PersonSchema)
     def post(self) -> Person:
         payload = request.get_json()
-        new_person: Person = PersonService.create(payload)
+        person = json.loads(payload)
+        new_person: Person = PersonService.create(person)
         return new_person
+
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
