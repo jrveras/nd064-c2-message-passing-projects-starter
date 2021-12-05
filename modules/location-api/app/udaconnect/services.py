@@ -119,27 +119,27 @@ class LocationService:
 
         # logger.warning('WARNING: Resultado 1: {}'.format(locations))
 
-        # data: List[Location] = []
+        data: List[Location] = []
         
-        # for location in locations:
-        #     location = Location(
-        #             id=location.id,
-        #             person_id=location.person_id,
-        #             creation_time=location.creation_time,
-        #         )
-        #     location.set_wkt_with_coords(location.latitude, location.longitude)
+        for location in locations:
+            location = Location(
+                    id=location.id,
+                    person_id=location.person_id,
+                    creation_time=location.creation_time,
+                )
+            location.set_wkt_with_coords(location.latitude.ST_AsText(), location.longitude.ST_AsText())
 
-        #     data.append(
-        #         Location(location)
-        #     )
+            data.append(
+                Location(location)
+            )
 
         # # return db.session.query(Location).all()
         # logger.warning('WARNING: Resultado 2: {}'.format(data))
-        for location in locations:
-            location.wkt_shape = location.coordinate.ST_AsText()
+        for location in data:
+            # location.wkt_shape = location.coordinate.ST_AsText()
             validation_results: Dict = LocationSchema().validate(location)
             if validation_results:
-                logger.warning(f"Unexpected data format in payload JJ: {validation_results}")
+                logger.warning(f"Unexpected data format in payload JJ New: {validation_results}")
                 raise Exception(f"Invalid payload: {validation_results}")
         return locations
 
