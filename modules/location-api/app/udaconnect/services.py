@@ -119,20 +119,30 @@ class LocationService:
 
         # logger.warning('WARNING: Resultado 1: {}'.format(locations))
 
-        data: List[Location] = []
-        
+        data = []
         for location in locations:
-            location = Location(
-                    id=location.id,
-                    person_id=location.person_id,
-                    creation_time=location.creation_time,
-                    longitude=location.longitude,
-                    latitude=location.latitude
-                )
-
             data.append(
-                Location(location)
-            )
+                    {
+                        "id": location.id,
+                        "person_id": location.person_id,
+                        "longitude": "",
+                        "latitude": "",
+                        "creation_time": location.creation_time
+                    }
+                )
+        
+        # for location in locations:
+        #     location = Location(
+        #             id=location.id,
+        #             person_id=location.person_id,
+        #             creation_time=location.creation_time,
+        #             longitude="" ,
+        #             latitude=""
+        #         )
+
+        #     data.append(
+        #         Location(location)
+        #     )
 
         # # return db.session.query(Location).all()
         # logger.warning('WARNING: Resultado 2: {}'.format(data))
@@ -142,7 +152,7 @@ class LocationService:
             if validation_results:
                 logger.warning(f"Unexpected data format in payload JJ New: {validation_results}")
                 raise Exception(f"Invalid payload: {validation_results}")
-        return locations
+        return data
 
 
 class PersonService:
