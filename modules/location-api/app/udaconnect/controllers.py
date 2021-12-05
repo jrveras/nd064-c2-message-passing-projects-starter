@@ -1,4 +1,5 @@
 import json
+import logging
 
 from datetime import datetime
 
@@ -17,7 +18,8 @@ from typing import Optional, List
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # TODO: This needs better exception handling
 
@@ -53,6 +55,8 @@ class PersonsResource(Resource):
     def post(self) -> Person:
         payload = request.get_json()
         person = json.loads(payload)
+        logger.debug(payload)
+        logger.debug(person)
         new_person: Person = PersonService.create(person)
         return new_person
 
