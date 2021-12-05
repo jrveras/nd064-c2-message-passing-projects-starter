@@ -100,8 +100,8 @@ class PersonsResource(Resource):
                 response=json.dumps({ "ERROR": format(e) }),
                 status=500,
                 mimetype='application/json'
-            return response
             )
+            return response
         finally:
             producer = Producer(config)
             person = json.dumps(payload)
