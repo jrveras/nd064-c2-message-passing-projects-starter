@@ -10,7 +10,7 @@ from app.udaconnect.schemas import (
     PersonSchema,
 )
 from app.udaconnect.services import PersonService
-from flask import app, request, json
+from flask import request, json, Response
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
@@ -96,11 +96,15 @@ class PersonsResource(Resource):
             payload = request.get_json()
             new_person: Person = PersonService.create(payload)
         except Exception as e:
-            response = app.response_class(
-                response=json.dumps({ "ERROR": format(e) }),
-                status=500,
-                mimetype='application/json'
-            )
+            # response = app.response_class(
+            #     response=json.dumps({ "ERROR": format(e) }),
+            #     status=500,
+            #     mimetype='application/json'
+            # )
+
+            response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+
             return response
         finally:
             producer = Producer(config)
