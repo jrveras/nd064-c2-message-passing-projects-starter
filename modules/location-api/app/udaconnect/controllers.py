@@ -54,10 +54,8 @@ class PersonsResource(Resource):
     @responds(schema=PersonSchema)
     def post(self) -> Person:
         payload = request.get_json()
-        person = json.loads(payload)
         logger.debug(payload)
-        logger.debug(person)
-        new_person: Person = PersonService.create(person)
+        new_person: Person = PersonService.create(payload)
         return new_person
 
 

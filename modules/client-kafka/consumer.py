@@ -41,10 +41,12 @@ if __name__ == '__main__':
             else:
                 result = msg.value().decode("utf-8")
                 newPerson = json.loads(result)
+                logger.debug(newPerson)
+                logger.debug(result)
                 logger.debug("Consumed event from topic {topic}: {person}".format(
                     topic=msg.topic(), person=msg.value().decode("utf-8")))
                 # response = requests.get('http://udaconnect-location-api.default.svc.cluster.local:5000/api/locations/47')
-                response = requests.post('http://udaconnect-location-api.default.svc.cluster.local:5000/api/persons', data = newPerson)
+                response = requests.post('http://udaconnect-location-api.default.svc.cluster.local:5000/api/persons', json=newPerson)
                 logger.debug(response.text)
     except KeyboardInterrupt:
         pass
