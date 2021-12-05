@@ -127,7 +127,7 @@ class LocationService:
                         "person_id": location.person_id,
                         "longitude": "-106.5721846",
                         "latitude": "35.058564",
-                        "creation_time": datetime.datetime.now()
+                        "creation_time": '2020-07-07 10:37:06.000000'
                     }
                 )
         
