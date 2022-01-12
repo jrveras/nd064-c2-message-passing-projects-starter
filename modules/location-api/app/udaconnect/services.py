@@ -114,12 +114,18 @@ class LocationService:
         return new_location
     
     @staticmethod
-    def retrieve_all() -> List[Location]:
-        locations, coord_text = (
-            db.session.query(Location, Location.coordinate.ST_AsText())
-            .all()
-        )
-        return locations
+    def retrieve_all() -> Location:
+        locations = db.session.query(Location).all()
+
+        logger.warning(locations)
+
+        return {
+                    "id": "1",
+                    "person_id": "15",
+                    "longitude": "-106.5721846",
+                    "latitude": "35.058564",
+                    "creation_time": '2020-07-07 10:37:06.000000'
+                }
     
     # @staticmethod
     # def retrieve_all() -> List[Location]:
