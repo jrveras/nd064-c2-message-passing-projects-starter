@@ -4,5 +4,7 @@ metadata:
   name: udaconnect-kafka-client
 spec:
   containers:
-  - name: udaconnect-kafka-client
-    image: jairtonjr/udaconnect-kafka-client:latest
+  - name: udaconnect-kafka-client-person
+    image: jairtonjr/udaconnect-kafka-client-person:latest
+  - name: udaconnect-kafka-client-location
+    image: jairtonjr/udaconnect-kafka-client-location:latest

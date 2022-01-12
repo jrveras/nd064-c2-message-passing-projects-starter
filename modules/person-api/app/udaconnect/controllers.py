@@ -5,17 +5,18 @@ import sys
 
 from datetime import datetime
 
-from app.udaconnect.models import Person
+from app.udaconnect.models import Person, Location
 from app.udaconnect.schemas import (
     PersonSchema,
+    ConnectionSchema,
+    LocationSchema,
 )
-from app.udaconnect.services import PersonService
+from app.udaconnect.services import PersonService, ConnectionService, LocationService
 from flask import request, json, Response
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
 from confluent_kafka import Producer
-from confluent_kafka import Consumer, OFFSET_BEGINNING
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -96,12 +97,6 @@ class PersonsResource(Resource):
             payload = request.get_json()
             new_person: Person = PersonService.create(payload)
         except Exception as e:
-            # response = app.response_class(
-            #     response=json.dumps({ "ERROR": format(e) }),
-            #     status=500,
-            #     mimetype='application/json'
-            # )
-
             response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
             response.headers["Content-Type"] = "application/json; charset=utf-8"
 
@@ -128,3 +123,34 @@ class PersonResource(Resource):
     def get(self, person_id) -> Person:
         person: Person = PersonService.retrieve(person_id)
         return person
+
+@api.route("/persons/<person_id>/connection")
+@api.param("start_date", "Lower bound of date range", _in="query")
+@api.param("end_date", "Upper bound of date range", _in="query")
+@api.param("distance", "Proximity to a given user in meters", _in="query")
+class ConnectionDataResource(Resource):
+    @responds(schema=ConnectionSchema, many=True)
+    def get(self, person_id) -> ConnectionSchema:
+        start_date: datetime = datetime.strptime(
+            request.args["start_date"], DATE_FORMAT
+        )
+        end_date: datetime = datetime.strptime(request.args["end_date"], DATE_FORMAT)
+        distance: Optional[int] = request.args.get("distance", 5)
+
+        results = ConnectionService.find_contacts(
+            person_id=person_id,
+            start_date=start_date,
+            end_date=end_date,
+            meters=distance,
+        )
+        return results
+
+@api.route("/locations")
+class LocationResource(Resource):
+    @accepts(schema=LocationSchema)
+    @responds(schema=LocationSchema)
+    def post(self) -> Location:
+        request.get_json()
+        location: Location = LocationService.create(request.get_json())
+        return location
+

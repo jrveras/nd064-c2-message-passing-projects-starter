@@ -1,43 +1,52 @@
 import json
 import logging
 
-from datetime import datetime
-
-from app.udaconnect.models import Connection, Location, Person
+from app.udaconnect.models import Location, Person
 from app.udaconnect.schemas import (
-    ConnectionSchema,
     LocationSchema,
     PersonSchema,
 )
-from app.udaconnect.services import ConnectionService, LocationService, PersonService
-from flask import request
+from app.udaconnect.services import LocationService, PersonService
+from flask import request, json, Response
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
-from typing import Optional, List
+from typing import List
 
-DATE_FORMAT = "%Y-%m-%d"
+from confluent_kafka import Producer
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
+config = {'bootstrap.servers': 'udaconnect-queue-kafka-0.udaconnect-queue-kafka-headless.default.svc.cluster.local:9092'}
+topic = "locations"
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # TODO: This needs better exception handling
-
 
 @api.route("/locations")
 class LocationResource(Resource):
     @accepts(schema=LocationSchema)
     @responds(schema=LocationSchema)
     def post(self) -> Location:
-        request.get_json()
-        location: Location = LocationService.create(request.get_json())
-        return location
+        try:
+            payload = request.get_json()
+            new_location: Location = LocationService.create(payload)
+        except Exception as e:
+            response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+        finally:
+            producer = Producer(config)
+            location = json.dumps(payload)
 
-    
-    @responds(schema=LocationSchema, many=True)
-    def get(self) -> List[Location]:
-        locations: List[Location] = LocationService.retrieve_all()
-        return locations
+            producer.produce(topic, location)
+            producer.flush()
+        
+        return new_location
+
+    # @responds(schema=LocationSchema, many=True)
+    # def get(self) -> List[Location]:
+    #     locations: List[Location] = LocationService.retrieve_all()
+    #     return locations
 
 @api.route("/locations/<location_id>")
 @api.param("location_id", "Unique ID for a given Location", _in="query")
@@ -47,7 +56,6 @@ class LocationResource(Resource):
         location: Location = LocationService.retrieve(location_id)
         return location
 
-
 @api.route("/persons")
 class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
@@ -56,31 +64,3 @@ class PersonsResource(Resource):
         payload = request.get_json()
         new_person: Person = PersonService.create(payload)
         return new_person
-
-
-    @responds(schema=PersonSchema, many=True)
-    def get(self) -> List[Person]:
-        persons: List[Person] = PersonService.retrieve_all()
-        return persons
-
-
-@api.route("/persons/<person_id>/connection")
-@api.param("start_date", "Lower bound of date range", _in="query")
-@api.param("end_date", "Upper bound of date range", _in="query")
-@api.param("distance", "Proximity to a given user in meters", _in="query")
-class ConnectionDataResource(Resource):
-    @responds(schema=ConnectionSchema, many=True)
-    def get(self, person_id) -> ConnectionSchema:
-        start_date: datetime = datetime.strptime(
-            request.args["start_date"], DATE_FORMAT
-        )
-        end_date: datetime = datetime.strptime(request.args["end_date"], DATE_FORMAT)
-        distance: Optional[int] = request.args.get("distance", 5)
-
-        results = ConnectionService.find_contacts(
-            person_id=person_id,
-            start_date=start_date,
-            end_date=end_date,
-            meters=distance,
-        )
-        return results
