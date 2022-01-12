@@ -1,10 +1,8 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: udaconnect-kafka-client
+  name: udaconnect-kafka-client-person
 spec:
   containers:
   - name: udaconnect-kafka-client-person
     image: jairtonjr/udaconnect-kafka-client-person:latest
-  - name: udaconnect-kafka-client-location
-    image: jairtonjr/udaconnect-kafka-client-location:latest
