@@ -24,6 +24,10 @@ class PersonService:
         db.session.commit()
 
         return new_person
+    
+    @staticmethod
+    def retrieve_all() -> List[Person]:
+        return db.session.query(Person).all()
 
 class ConnectionService:
     @staticmethod
