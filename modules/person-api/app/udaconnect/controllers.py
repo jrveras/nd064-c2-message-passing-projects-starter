@@ -96,23 +96,17 @@ class PersonsResource(Resource):
         try:
             payload = request.get_json()
             new_person: Person = PersonService.create(payload)
-
-            producer = Producer(config)
-            person = json.dumps(payload)
-
-            producer.produce(topic, person)
-            producer.flush()
         except Exception as e:
             response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
             response.headers["Content-Type"] = "application/json; charset=utf-8"
 
             return response
-        # finally:
-        #     producer = Producer(config)
-        #     person = json.dumps(payload)
+        finally:
+            producer = Producer(config)
+            person = json.dumps(payload)
 
-        #     producer.produce(topic, person)
-        #     producer.flush()
+            producer.produce(topic, person)
+            producer.flush()
         
         return new_person
 

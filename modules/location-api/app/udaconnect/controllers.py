@@ -31,23 +31,17 @@ class LocationResource(Resource):
         try:
             payload = request.get_json()
             new_location: Location = LocationService.create(payload)
-            
-            producer = Producer(config)
-            location = json.dumps(payload)
-
-            producer.produce(topic, location)
-            producer.flush()
         except Exception as e:
             response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
             response.headers["Content-Type"] = "application/json; charset=utf-8"
 
             return response
-        # finally:
-        #     producer = Producer(config)
-        #     location = json.dumps(payload)
+        finally:
+            producer = Producer(config)
+            location = json.dumps(payload)
 
-        #     producer.produce(topic, location)
-        #     producer.flush()
+            producer.produce(topic, location)
+            producer.flush()
         
         return new_location
 
