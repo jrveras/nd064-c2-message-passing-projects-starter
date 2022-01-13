@@ -47,8 +47,10 @@ if __name__ == '__main__':
 
                 # response = requests.get('http://udaconnect-location-api.default.svc.cluster.local:5000/api/locations/47')
                 response = requests.post('http://udaconnect-location-api.default.svc.cluster.local:5000/api/persons', json=newPerson)
+                response2 = requests.post('http://udaconnect-connection-api.default.svc.cluster.local:5000/api/persons', json=newPerson)
                 
                 logger.debug(response.text)
+                logger.debug(response2.text)
     except KeyboardInterrupt:
         pass
     finally:
