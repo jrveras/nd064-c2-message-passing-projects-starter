@@ -34,6 +34,8 @@ class LocationResource(Resource):
         except Exception as e:
             response = Response(response=json.dumps({ "ERROR": format(e) }), status=500, mimetype="application/json")
             response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+            return response
         finally:
             producer = Producer(config)
             location = json.dumps(payload)
