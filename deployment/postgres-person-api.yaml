@@ -78,7 +78,7 @@ spec:
                 name: db-env-person
                 key: DB_NAME
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data-2
+            - mountPath: /var/lib/postgresql/data
               name: postgresdb
       volumes:
         - name: postgresdb
