@@ -26,3 +26,7 @@ Werkzeug==0.16.1
 flask-restx==0.2.0
 confluent-kafka==1.7.0
 requests==2.26.0
+grpcio==1.43.0
+grpcio-tools==1.43.0
+futures==2.2.0
+protobuf==3.18.1
