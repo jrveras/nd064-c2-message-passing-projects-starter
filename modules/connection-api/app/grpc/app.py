@@ -4,7 +4,6 @@ import grpc
 import connection_pb2
 import connection_pb2_grpc
 from connection import ConnectionServicer
-import logging
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 def grpc_server():
@@ -19,7 +18,7 @@ def grpc_server():
     # Keep thread alive
     try:
         while True:
-            time.sleep(86400)
+            time.sleep(_ONE_DAY_IN_SECONDS)
     except KeyboardInterrupt:
         server.stop(0)
 if __name__ == '__main__':

@@ -1,14 +1,11 @@
 import time
-from concurrent import futures
 import os
-from traceback import print_tb
-import grpc
+from datetime import datetime, timedelta
+from typing import Dict
 import connection_pb2
 import connection_pb2_grpc
 
-from sqlalchemy import create_engine, func
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 
 DB_USERNAME = os.environ["DB_USERNAME"]
@@ -17,31 +14,23 @@ DB_HOST = os.environ["DB_HOST"]
 DB_PORT = os.environ["DB_PORT"]
 DB_NAME = os.environ["DB_NAME"]
 
-# import logging
-from datetime import datetime, timedelta
-from typing import Dict, List
-
-
-engine = create_engine("postgresql://ct_admin:wowimsosecure@postgres-connection:5432/geoconnections", echo=True)
+engine = create_engine(
+    f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}", echo=True
+)
 
 class ConnectionServicer(connection_pb2_grpc.ConnectionServiceServicer):
 
-    def Get(self, request, context):
-        print(DB_USERNAME)
-        print(DB_PASSWORD)
-        print(DB_HOST)
-        print(DB_PORT)
-        print(DB_NAME)
+    def GetList(self, request, context):
 
         with engine.connect() as con:
 
             # Prepare arguments for queries
-            person_id = 5
-            startDate = '2020-01-01'
-            endDate = '2020-12-30'
+            person_id = request.person_id
+            startDate = request.start_date
+            endDate = request.end_date
+            meters = request.meters
             start_date = datetime.strptime(startDate, '%Y-%m-%d').date()
             end_date = datetime.strptime(endDate, '%Y-%m-%d').date()
-            meters=5
 
             queryPerson = text(
                 """

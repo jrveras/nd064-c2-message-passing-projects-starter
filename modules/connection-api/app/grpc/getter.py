@@ -1,3 +1,4 @@
+import sys
 import grpc
 import connection_pb2
 import connection_pb2_grpc
@@ -11,5 +12,15 @@ print("Sending sample payload...")
 channel = grpc.insecure_channel("localhost:5005")
 stub = connection_pb2_grpc.ConnectionServiceStub(channel)
 
-response = stub.Get(connection_pb2.Empty())
+argv = sys.argv[1:]
+
+contact=connection_pb2.Contact(
+    person_id = int(argv[0]),
+    start_date = argv[1],
+    end_date = argv[2],
+    meters = int(argv[3])
+)
+
+# response = stub.Get(connection_pb2.Empty())
+response = stub.GetList(contact)
 print(response)
