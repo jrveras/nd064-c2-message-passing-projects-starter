@@ -1,0 +1,14 @@
+## Set up gRPC
+### Start gRPC Server
+```bash
+$ kubectl exec -it $(kubectl get pods --all-namespaces -o=jsonpath="{.items[0].metadata.name}" -l service=udaconnect-connection-api) /bin/sh
+$ python3 /app/grpc/app.py
+```
+### Execute gRPC Client
+Open new terminal window. \
+Args - 1: person_id 2: start_date 3: end_date 4: meters \
+Example - getter.py 2 2020-01-01 2020-12-30 5
+```bash
+$ kubectl exec -it $(kubectl get pods --all-namespaces -o=jsonpath="{.items[0].metadata.name}" -l service=udaconnect-connection-api) /bin/sh
+$ python3 /app/grpc/getter.py 2 2020-01-01 2020-12-30 5
+```
