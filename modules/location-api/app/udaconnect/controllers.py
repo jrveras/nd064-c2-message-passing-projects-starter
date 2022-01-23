@@ -50,8 +50,21 @@ class LocationResource(Resource):
 class LocationResource(Resource):
     @responds(schema=LocationSchema)
     def get(self, location_id) -> Location:
-        location: Location = LocationService.retrieve(location_id)
+        try:
+            location: Location = LocationService.retrieve(location_id)
+        except Exception as e:
+            response = Response(response=json.dumps({ "message": "Location Not Found" }), status=404, mimetype="application/json")
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+            return response
+
         return location
+
+
+
+
+
+
 
 @api.route("/persons")
 class PersonsResource(Resource):
