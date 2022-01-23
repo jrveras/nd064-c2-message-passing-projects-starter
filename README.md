@@ -1,8 +1,8 @@
 # UdaConnect
 
 ## Running the app
-The project has been set up such that you should be able to have the project up and running with Kubernetes.
-Run all the commands at the project root.
+The project has been set up such that you should be able to have the project up and running with Kubernetes. \
+**Run all the commands at the project root.**
 
 ### Prerequisites
 We will be installing the tools that we'll need to use for getting our environment set up properly.
@@ -53,8 +53,8 @@ $ kubectl exec -it $(kubectl get pods --all-namespaces -o=jsonpath="{.items[0].m
 $ python3 /app/grpc/app.py
 ```
 ### Execute gRPC Client
-Open new terminal window.
-Args - 1: person_id 2: start_date 3: end_date 4: meters
+Open new terminal window. \
+Args - 1: person_id 2: start_date 3: end_date 4: meters \
 Example - getter.py 2 2020-01-01 2020-12-30 5
 ```bash
 $ kubectl exec -it $(kubectl get pods --all-namespaces -o=jsonpath="{.items[0].metadata.name}" -l service=udaconnect-connection-api) /bin/sh
