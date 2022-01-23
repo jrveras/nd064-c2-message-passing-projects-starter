@@ -20,8 +20,3 @@ class PersonSchema(Schema):
 
     class Meta:
         model = Person
-
-
-class ConnectionSchema(Schema):
-    location = fields.Nested(LocationSchema)
-    person = fields.Nested(PersonSchema)
