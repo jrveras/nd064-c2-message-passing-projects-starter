@@ -24,6 +24,13 @@ class LocationService:
         return location
 
     @staticmethod
+    def retrieve_all() -> List[Location]:
+        locations: List = db.session.query(Location).all()
+        logger.warning("TRICOLOR")
+        logger.warning(locations)
+        return []
+
+    @staticmethod
     def create(location: Dict) -> Location:
         validation_results: Dict = LocationSchema().validate(location)
         if validation_results:
