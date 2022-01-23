@@ -10,6 +10,7 @@ We will be installing the tools that we'll need to use for getting our environme
 2. [Set up `kubectl`](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/cluster-access/kubectl/)
 3. [Install VirtualBox](https://www.virtualbox.org/wiki/Downloads) with at least version 6.0
 4. [Install Vagrant](https://www.vagrantup.com/docs/installation) with at least version 2.0
+5. [Install Helm](https://helm.sh/docs/intro/install/)
 
 ### Initialize K3s
 ```bash
