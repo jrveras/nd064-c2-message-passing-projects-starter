@@ -1,0 +1,10 @@
+REST
+   1. Due to scalability, flexibility and portability, as well as it’s simplest and easier when migrate from monolith to microservice.
+   2. The server should not be keeping track of the context of client requests and responses can potentially be cached for improved performance.
+
+Message Queue
+   1. Storing messages to set up performance, improve reliability, and enable decoupling of our systems
+
+gRPC
+   1. gRPC is more structured and faster
+   2. For internal systems that dictate fast performance, gRPC may be used by modules in a microservice to pass messages with one another.
