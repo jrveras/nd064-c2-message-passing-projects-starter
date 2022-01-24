@@ -26,7 +26,6 @@ class _ExcludeErrorsFilter(logging.Filter):
         """Only lets through log messages with log level below ERROR (numeric value: 40)."""
         return record.levelno < 40
 
-# TODO: This needs better exception handling
 configLog = {
         'version': 1,
         'filters': {

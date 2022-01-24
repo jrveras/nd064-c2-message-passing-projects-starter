@@ -21,8 +21,6 @@ topic = "locations"
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# TODO: This needs better exception handling
-
 @api.route("/locations")
 class LocationResource(Resource):
     @accepts(schema=LocationSchema)

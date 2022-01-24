@@ -4,7 +4,6 @@ WORKDIR .
 
 RUN apk add --no-cache gcc g++ musl-dev libffi-dev linux-headers geos libc-dev postgresql-dev librdkafka-dev
 COPY requirements.txt requirements.txt
-# RUN pip install -r requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 EXPOSE 5000

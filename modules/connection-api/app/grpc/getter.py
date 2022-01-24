@@ -21,6 +21,5 @@ contact=connection_pb2.Contact(
     meters = int(argv[3])
 )
 
-# response = stub.Get(connection_pb2.Empty())
 response = stub.GetList(contact)
 print(response)

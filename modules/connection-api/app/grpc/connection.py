@@ -92,7 +92,7 @@ class ConnectionServicer(connection_pb2_grpc.ConnectionServiceServicer):
                         creation_time = exposed_time.strftime("%m/%d/%Y, %H:%M:%S"),
                         id = location_id
                     )
-                    # person=connection_pb2.Person(person_map[exposed_person_id])
+
                     person=connection_pb2.Person(
                         company_name = person_map[exposed_person_id].company_name,
                         last_name = person_map[exposed_person_id].last_name,
